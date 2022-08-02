@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    <table id="tblData">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Country</th>
+        </tr>
+        <tr>
+            <td>John Doe</td>
+            <td>john@gmail.com</td>
+            <td>USA</td>
+        </tr>
+        <tr>
+            <td>Michael Addison</td>
+            <td>michael@gmail.com</td>
+            <td>UK</td>
+        </tr>
+        <tr>
+            <td>Sam Farmer</td>
+            <td>sam@gmail.com</td>
+            <td>France</td>
+        </tr>
+    </table>
+
+    
+    <button onclick="exportTableToExcel('tblData')">Export</button>
+    
+    <script>
+        function exportTableToExcel(tableID, filename = ''){
+            var downloadLink;
+            var dataType = 'application/vnd.ms-excel';
+            var tableSelect = document.getElementById(tableID);
+            //var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20'); 
+            var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20'); //error 
+
+            
+            // nome do arquivo de download
+            filename = filename?filename+'.xls':'dados.xls';
+            
+            // Create download link element
+            downloadLink = document.createElement("a");
+            
+            document.body.appendChild(downloadLink);
+            
+            if(navigator.msSaveOrOpenBlob){
+                let blob = new Blob(['\ufeff', tableHTML], {
+                    type: dataType
+                });
+                navigator.msSaveOrOpenBlob( blob, filename);
+            }else{
+                // link do download
+                downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+            
+                // 
+                downloadLink.download = filename;
+                
+                //
+                downloadLink.click();
+            }
+        }
+    </script>
+</body>
+</html>
